@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "doc_utils.h"
 
+#define linux_machine
+
 int number_of_lines;
 
 void set_numb_of_lines(FILE *fp)
@@ -110,7 +112,11 @@ int get_numb_of_chars_per_line(FILE *fp)
         while(1)
         {
                 c = fgetc(fp);
+#ifdef linux_machine
                 if ( c != '\r' )
+#else
+                if ( c != '\n' )
+#endif
                 {
                         clc++;
                 }
@@ -119,8 +125,11 @@ int get_numb_of_chars_per_line(FILE *fp)
                         break;
                 }
         }
-
+#ifdef linux_machine
         fseek(fp, -(clc+1), SEEK_CUR);
+#else
+        fseek(fp, -(clc+2), SEEK_CUR);
+#endif
         //for windows -(clc+2)  for linux -(clc+1)
         return clc;
 
