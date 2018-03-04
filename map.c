@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 #include "map.h"
 #include "doc_utils.h"
 
@@ -56,8 +57,8 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
         if (number_of_line == 0)
         {
                 //allocate first map_node
-                map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char));
-                //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)
+                map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char));
+                //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)+1*sizeof("\n")
 
 
                 if(map_node_next == NULL)
@@ -67,8 +68,11 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 }
 
                 //initialize fields
-                map_node_next->text_length = number_of_character_line;
+                //add 1 in text_length for character \n
+                map_node_next->text_length = number_of_character_line + 1;
                 fread(map_node_next->text, 1, number_of_character_line, fp);
+                //add NULL character to end of each line
+                strcat(map_node_next->text, "\n");
                 map_node_next->id = number_of_line;
                 map_node_next->next = NULL;
                 map_node_head = map_node_next;
@@ -76,13 +80,13 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 //set fp to the new line
                 fseek(fp, 1, SEEK_CUR);
                 printf("The numb of chars in line %d is %d\n", number_of_line, number_of_character_line);
-                printf("%.*s\n", number_of_character_line, map_node_head->text);
+                printf("%.*s>>>\n", number_of_character_line + 1, map_node_head->text);
         }
         else
         {
                 //allocate map_node
-                map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char));
-                //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)
+                map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char));
+                //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)+1*sizeof("\n")
 
                 if(map_node_next == NULL)
                 {
@@ -91,8 +95,11 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 }
 
                 //initialize fields
-                map_node_next->text_length = number_of_character_line;
+                //add 1 in text_length for character \n
+                map_node_next->text_length = number_of_character_line + 1;
                 fread(map_node_next->text, 1, number_of_character_line, fp);
+                //add NULL character to end of each line
+                strcat(map_node_next->text, "\n");
                 map_node_next->id = number_of_line;
                 map_node_next->next = NULL;
                 map_node_tail->next = map_node_next;
@@ -100,7 +107,7 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 //set fp to the new line
                 fseek(fp, 1, SEEK_CUR);
                 printf("The numb of chars in line %d is %d\n", number_of_line, number_of_character_line);
-                printf("%.*s\n", number_of_character_line, map_node_next->text);
+                printf("%.*s>>>\n", number_of_character_line + 1, map_node_next->text);
 
         }
         return 0;
