@@ -61,6 +61,7 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
         {
                 //allocate first map_node
                 map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char));
+                memset(map_node_next, 0, (sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char)));
                 //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)+1*sizeof("\n")
                 if(map_node_next == NULL)
                 {
@@ -73,8 +74,8 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 map_node_next->text_length = number_of_character_line + 1;
                 fread(map_node_next->text, 1, number_of_character_line, fp);
                 //add "\n" character to end of each line
-                //strcat(map_node_next->text, "\n");
-                map_node_next->text[map_node_next->text_length-1] = '\n';
+                strcat(map_node_next->text, "\0");
+                //map_node_next->text[map_node_next->text_length] = '\0';
                 map_node_next->id = number_of_line;
                 map_node_next->next = NULL;
                 map_node_head = map_node_next;
@@ -88,6 +89,7 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
         {
                 //allocate map_node
                 map_node_next = (struct map_node*) malloc(sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char));
+                memset(map_node_next, 0, (sizeof(struct map_node) + number_of_character_line*sizeof(char) + 1*sizeof(char)));
                 //Memory allocated is sizeof(struct)+(length of array)*sizeof(char)+1*sizeof("\n")
                 if(map_node_next == NULL)
                 {
@@ -100,8 +102,8 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 map_node_next->text_length = number_of_character_line + 1;
                 fread(map_node_next->text, 1, number_of_character_line, fp);
                 //add "\n" character to end of each line
-                //strcat(map_node_next->text, "\n");
-                map_node_next->text[map_node_next->text_length-1] = '\n';
+                strcat(map_node_next->text, "\0");
+                //map_node_next->text[map_node_next->text_length] = '\0';
                 map_node_next->id = number_of_line;
                 map_node_next->next = NULL;
                 map_node_tail->next = map_node_next;
@@ -161,6 +163,9 @@ struct word *get_word(void)
 
         struct word *current_word;
 
+        if(map_node_current == NULL)
+            return NULL;
+
         //first word in line
         if(i == 0)
         {
@@ -175,6 +180,7 @@ struct word *get_word(void)
             }
             //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\n")
             current_word = (struct word*) malloc(sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char));
+            memset(current_word, 0, (sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char)));
             if(current_word == NULL)
             {
                 printf("Not enough memory in heap\n");
@@ -188,7 +194,7 @@ struct word *get_word(void)
             {
                 current_word->actual_word[temp] = map_node_current->text[temp];
             }
-            current_word->actual_word[current_word->word_length-1] = '\n';
+            strcat(current_word->actual_word, "\0");
         }
         //not first word in line
         else
@@ -204,6 +210,7 @@ struct word *get_word(void)
             }
             //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\n")
             current_word = (struct word*) malloc(sizeof(struct word) + (i-temp_i-1)*sizeof(char) + 1*sizeof(char));
+            memset(current_word, 0, (sizeof(struct word) + (i-temp_i-1)*sizeof(char) + 1*sizeof(char)));
             if(current_word == NULL)
             {
                 printf("Not enough memory in heap\n");
@@ -217,11 +224,11 @@ struct word *get_word(void)
             {
                 current_word->actual_word[temp-temp_i] = map_node_current->text[temp];
             }
-            current_word->actual_word[current_word->word_length-1] = '\n';
+            strcat(current_word->actual_word, "\0");
         }
 
 
-        if(map_node_current->text[i-1] == '\n')
+        if(map_node_current->text[i-1] == '\0')
         {
             map_node_current = map_node_current->next;
             i = 0;
