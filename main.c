@@ -4,6 +4,7 @@
 #include "command_line_utils.h"
 #include "doc_utils.h"
 #include "map.h"
+#include "retrie.h"
 
 #define MAX_ARG_STR 256
 
@@ -47,6 +48,8 @@ int main(int argc, char **argv)
                 break;
             free(current_word);
         }
+
+        load_retrie();
 
         free_map_list();
 }

@@ -7,6 +7,9 @@
 #define YES 1
 #define NO 0
 
+#define FOUND 1
+#define NOT_FOUND 0
+
 struct trie_node
 {
         char key;
