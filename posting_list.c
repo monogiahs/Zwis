@@ -5,7 +5,7 @@
 #include "map.h"
 
 //head node for posting_list
-struct post_list_node *post_list_head = NULL;
+//struct post_list_node *post_list_head = NULL;
 
 //create a new posting list node and initialize it
 struct post_list_node *new_list_node()
@@ -57,3 +57,4 @@ struct post_list_node *update_post_list(struct post_list_node *post_list_head, s
             post_list_temp = post_list_temp->post_next;
     }
 }
+
