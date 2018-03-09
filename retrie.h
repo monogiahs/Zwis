@@ -19,6 +19,14 @@ struct trie_node
         int end;
 };
 
+void clean_trie(void);
+
+void free_trie(struct trie_node *root);
+
+struct trie_node *search_char_to_trie(struct trie_node *root, char character, int i);
+
+struct trie_node *search_word_to_trie(struct word *current_word);
+
 int insert_word_to_trie(struct word *current_word);
 
 struct trie_node *load_retrie(void);
