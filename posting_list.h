@@ -10,6 +10,9 @@ struct post_list_node
         struct post_list_node *post_next;
 };
 
+struct post_list_node *update_post_list(struct post_list_node *post_list_head, struct word *current_word);
+
+
 #endif /* _POSTING_LIST_H_ */
 
-struct post_list_node *update_post_list(struct post_list_node *post_list_head, struct word *current_word);
+
