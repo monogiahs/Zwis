@@ -15,7 +15,7 @@ struct trie_node
         char key;
         struct trie_node *right_node;
         struct trie_node *down_node;
-        struct posting_list_node *post_list_head;
+        struct post_list_node *post_list_head;
         int end;
 };
 
