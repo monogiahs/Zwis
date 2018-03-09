@@ -7,7 +7,9 @@ SOURCES += \
     main.c \
     map.c \
     command_line_utils.c \
-    doc_utils.c
+    doc_utils.c \
+    posting_list.c \
+    retrie.c
 
 DISTFILES += \
     docfile \
@@ -17,5 +19,7 @@ DISTFILES += \
 HEADERS += \
     command_line_utils.h \
     doc_utils.h \
-    map.h
+    map.h \
+    posting_list.h \
+    retrie.h
 

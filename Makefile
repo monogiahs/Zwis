@@ -51,11 +51,15 @@ OBJECTS_DIR   = ./
 SOURCES       = main.c \
 		map.c \
 		command_line_utils.c \
-		doc_utils.c 
+		doc_utils.c \
+		posting_list.c \
+		retrie.c 
 OBJECTS       = main.o \
 		map.o \
 		command_line_utils.o \
-		doc_utils.o
+		doc_utils.o \
+		posting_list.o \
+		retrie.o
 DIST          = docfile \
 		documents.txt \
 		docfile1.txt \
@@ -112,10 +116,14 @@ DIST          = docfile \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		Zwis.pro command_line_utils.h \
 		doc_utils.h \
-		map.h main.c \
+		map.h \
+		posting_list.h \
+		retrie.h main.c \
 		map.c \
 		command_line_utils.c \
-		doc_utils.c
+		doc_utils.c \
+		posting_list.c \
+		retrie.c
 QMAKE_TARGET  = Zwis
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Zwis
@@ -293,7 +301,9 @@ compiler_clean:
 
 main.o: main.c command_line_utils.h \
 		doc_utils.h \
-		map.h
+		map.h \
+		retrie.h \
+		posting_list.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o main.o main.c
 
 map.o: map.c map.h \
@@ -305,6 +315,14 @@ command_line_utils.o: command_line_utils.c command_line_utils.h
 
 doc_utils.o: doc_utils.c doc_utils.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o doc_utils.o doc_utils.c
+
+posting_list.o: posting_list.c posting_list.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o posting_list.o posting_list.c
+
+retrie.o: retrie.c retrie.h \
+		posting_list.h \
+		map.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o retrie.o retrie.c
 
 ####### Install
 

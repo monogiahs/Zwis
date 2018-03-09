@@ -3,7 +3,7 @@
 #include "retrie.h"
 #include "map.h"
 
-//node for the head of map list
+//head node for map list
 struct trie_node *trie_node_head = NULL;
 
 //make a new trie node and zero initialize them
@@ -132,7 +132,7 @@ int insert_word_to_trie(struct word *current_word)
         }
 
         trie_node_current->end = YES;
-        //update_posting_list(trie_node_current->posting_list_node,current_word);
+        trie_node_current->post_list_head = update_post_list(trie_node_current->post_list_head,current_word);
         return dummy;
 }
 
