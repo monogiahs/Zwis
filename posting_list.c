@@ -17,6 +17,12 @@ struct post_list_node *new_list_node()
     return list_node_current;
 }
 
+void free_post_list(struct post_list_node *post_list_head)
+{
+    if(post_list_head->post_next != NULL)
+        free_post_list(post_list_head->post_next);
+    free(post_list_head);
+}
 
 struct post_list_node *update_post_list(struct post_list_node *post_list_head, struct word *current_word)
 {
@@ -57,4 +63,22 @@ struct post_list_node *update_post_list(struct post_list_node *post_list_head, s
             post_list_temp = post_list_temp->post_next;
     }
 }
+
+
+struct post_list_node *search_post_list(struct post_list_node *post_list_head, struct word *cli_word)
+{
+    while(1)
+    {
+        if(post_list_head == NULL)
+            return NULL;
+        if(post_list_head->line_id == cli_word->number_of_line)
+            return post_list_head;
+        else
+            post_list_head = post_list_head->post_next;
+
+    }
+}
+
+
+
 

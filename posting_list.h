@@ -12,6 +12,9 @@ struct post_list_node
 
 struct post_list_node *update_post_list(struct post_list_node *post_list_head, struct word *current_word);
 
+void free_post_list(struct post_list_node *post_list_head);
+
+struct post_list_node *search_post_list(struct post_list_node *post_list_head,struct word *cli_word);
 
 #endif /* _POSTING_LIST_H_ */
 
