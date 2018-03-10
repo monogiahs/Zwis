@@ -43,5 +43,7 @@ int main(int argc, char **argv)
 
         load_retrie();
         command_line_user();
+        df_print_retrie();
+        clean_trie();
         free_map_list();
 }
