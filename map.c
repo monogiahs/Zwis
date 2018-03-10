@@ -178,7 +178,7 @@ struct word *get_word(void)
                 }
                 i++;
             }
-            //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\n")
+            //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\0")
             current_word = (struct word*) malloc(sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char));
             memset(current_word, 0, (sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char)));
             if(current_word == NULL)
