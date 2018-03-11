@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 #include "posting_list.h"
 #include "map.h"
@@ -8,12 +9,13 @@
 //struct post_list_node *post_list_head = NULL;
 
 //create a new posting list node and initialize it
-struct post_list_node *new_list_node()
+struct post_list_node *new_list_node(int word_length)
 {
-    struct post_list_node *list_node_current = (struct post_list_node *) malloc(sizeof(struct post_list_node));
+    struct post_list_node *list_node_current = (struct post_list_node *) malloc(sizeof(struct post_list_node) + word_length*sizeof(char) + 1*sizeof(char));
     list_node_current->line_id = 0;
     list_node_current->freq = 0;
     list_node_current->post_next = NULL;
+    list_node_current->first_line_id = -1;
     return list_node_current;
 }
 
@@ -35,7 +37,10 @@ struct post_list_node *update_post_list(struct post_list_node *post_list_head, s
         //first word in posting_list
         if(post_list_temp == NULL)
         {
-            post_list_temp = new_list_node();
+            post_list_temp = new_list_node(current_word->word_length);
+            post_list_temp->first_line_id = current_word->number_of_line;
+            memcpy(post_list_temp->actual_word, current_word->actual_word, current_word->word_length);
+            //strcpy(post_list_temp->actual_word, current_word->actual_word);
             post_list_temp->line_id = current_word->number_of_line;
             post_list_temp->freq++;
             return post_list_temp;
@@ -52,7 +57,7 @@ struct post_list_node *update_post_list(struct post_list_node *post_list_head, s
             //same word, different line
             else
             {
-                post_list_temp->post_next = new_list_node();
+                post_list_temp->post_next = new_list_node(0);
                 post_list_temp->post_next->line_id = current_word->number_of_line;
                 post_list_temp->post_next->freq++;
                 return post_list_head;

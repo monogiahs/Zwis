@@ -82,8 +82,6 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 map_node_tail = map_node_next;
                 //set fp to the new line
                 fseek(fp, 1, SEEK_CUR);
-                printf("The numb of chars in line %d is %d\n", number_of_line, number_of_character_line);
-                printf("%.*s>>>\n", number_of_character_line + 1, map_node_head->text);
         }
         else
         {
@@ -110,10 +108,9 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
                 map_node_tail = map_node_next;
                 //set fp to the new line
                 fseek(fp, 1, SEEK_CUR);
-                printf("The numb of chars in line %d is %d\n", number_of_line, number_of_character_line);
-                printf("%.*s>>>\n", number_of_character_line + 1, map_node_next->text);
-
         }
+        //printf("The numb of chars in line %d is %d\n", number_of_line, number_of_character_line);
+        //printf("%.*s>>>\n", number_of_character_line + 1, map_node_head->text);
         return 0;
 }
 
@@ -157,9 +154,10 @@ struct word *get_word(void)
 {
         static int i;
 
-        int temp_i, temp;
+        int temp, j, temp_j;
         temp = 0;
-        temp_i = i;
+        j = 0;
+        temp_j = 0;
 
         struct word *current_word;
 
@@ -171,16 +169,23 @@ struct word *get_word(void)
         {
             while(i < map_node_current->text_length)
             {
-                if(map_node_current->text[i] == ' ')
+                while(map_node_current->text[i] != ' ' && map_node_current->text[i] != '\t')
                 {
                     i++;
-                    break;
+                    //j is number of characters of word
+                    j++;
+                    if(i == map_node_current->text_length)
+                        break;
                 }
+                if(i == map_node_current->text_length)
+                    break;
+                if((map_node_current->text[i] == ' ' || map_node_current->text[i] == '\t') && j != 0)
+                    break;
                 i++;
             }
             //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\0")
-            current_word = (struct word*) malloc(sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char));
-            memset(current_word, 0, (sizeof(struct word) + (i-1)*sizeof(char) + 1*sizeof(char)));
+            current_word = (struct word*) malloc(sizeof(struct word) + j*sizeof(char) + 1*sizeof(char));
+            memset(current_word, 0, (sizeof(struct word) + j*sizeof(char) + 1*sizeof(char)));
             if(current_word == NULL)
             {
                 printf("Not enough memory in heap\n");
@@ -189,10 +194,11 @@ struct word *get_word(void)
 
             //fill word struct
             current_word->number_of_line = map_node_current->id;
-            current_word->word_length = i-1+1;
-            for(temp=0;temp<=i-2;temp++)
+            current_word->word_length = j + 1;
+            for(temp=i-j;temp<=i-1;temp++)
             {
-                current_word->actual_word[temp] = map_node_current->text[temp];
+                current_word->actual_word[temp_j] = map_node_current->text[temp];
+                temp_j++;
             }
             strcat(current_word->actual_word, "\0");
         }
@@ -201,16 +207,23 @@ struct word *get_word(void)
         {
             while(i < map_node_current->text_length)
             {
-                if(map_node_current->text[i] == ' ' || map_node_current->text[i] == '\n')
+                while(map_node_current->text[i] != ' ' && map_node_current->text[i] != '\t')
                 {
                     i++;
-                    break;
+                     //j is number of characters of word
+                    j++;
+                    if(i == map_node_current->text_length)
+                        break;
                 }
+                if(i == map_node_current->text_length)
+                    break;
+                if((map_node_current->text[i] == ' ' || map_node_current->text[i] == '\t') && j != 0)
+                    break;
                 i++;
             }
             //Memory allocated is sizeof(struct)+(length of word)*sizeof(char)+1*sizeof("\n")
-            current_word = (struct word*) malloc(sizeof(struct word) + (i-temp_i-1)*sizeof(char) + 1*sizeof(char));
-            memset(current_word, 0, (sizeof(struct word) + (i-temp_i-1)*sizeof(char) + 1*sizeof(char)));
+            current_word = (struct word*) malloc(sizeof(struct word) + j*sizeof(char) + 1*sizeof(char));
+            memset(current_word, 0, (sizeof(struct word) + j*sizeof(char) + 1*sizeof(char)));
             if(current_word == NULL)
             {
                 printf("Not enough memory in heap\n");
@@ -219,10 +232,11 @@ struct word *get_word(void)
 
             //fill word struct
             current_word->number_of_line = map_node_current->id;
-            current_word->word_length = i-temp_i-1+1;
-            for(temp=temp_i;temp<=i-2;temp++)
+            current_word->word_length = j+1;
+            for(temp=i-j;temp<=i-1;temp++)
             {
-                current_word->actual_word[temp-temp_i] = map_node_current->text[temp];
+                current_word->actual_word[temp_j] = map_node_current->text[temp];
+                temp_j++;
             }
             strcat(current_word->actual_word, "\0");
         }
@@ -234,9 +248,9 @@ struct word *get_word(void)
             i = 0;
         }
 
-        printf("%d\t%d\t%s\n",
-        current_word->number_of_line, current_word->word_length,
-        current_word->actual_word);
+        //printf("%d\t%d\t%s\n",
+        //current_word->number_of_line, current_word->word_length,
+        //current_word->actual_word);
 
 
         return current_word;

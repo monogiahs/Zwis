@@ -15,7 +15,7 @@ void command_line_user(void)
 {
     char *str=malloc(MAX_ARG_STR*sizeof(char));
     char *temp_str=malloc(MAX_ARG_STR*sizeof(char));
-    char *tokenSpace1, *tokenSpace2, *args, *word, *delete_word_end;
+    char *tokenSpace1, *tokenSpace2, *args, *word;
 
     int CLIcount, k, line_id, cli_word_length;
 
@@ -61,8 +61,9 @@ void command_line_user(void)
             CLIcount++;
         }
         //First argument is /df
-        else if(strcmp(tokenSpace1, "/df\n") == 0 ||(strcmp(tokenSpace1, "/df") == 0 && strcmp(tokenSpace2, "\n") == 0))
+        else if ((strcmp(tokenSpace1, "/df\n") == 0) || ((strcmp(tokenSpace1, "/df") == 0) && (strcmp(tokenSpace2, "\n") == 0)))
         {
+            df_print_retrie();
             CLIcount++;
         }
         //First argument is /tf
@@ -90,7 +91,7 @@ void command_line_user(void)
                 CLIcount++;
                 continue;
             }
-            delete_word_end = strtok_r(word, "\n", &args);
+            strtok_r(word, "\n", &args);
             cli_word_length = strlen(word) + 1;
 
             //Memory allocated is sizeof(struct) + sizeof(word from cli) + sizeof("\0")
@@ -110,13 +111,14 @@ void command_line_user(void)
             if((cli_trie_node = search_word_to_trie(cli_word)) == NULL)
             {
                 printf("Couldn't find word:%s \n", cli_word->actual_word);
+                free(cli_word);
                 continue;
             }
             //search in posting list, starting from head
             if((cli_post_node = search_post_list(cli_trie_node->post_list_head, cli_word)) == NULL)
             {
-
                 printf("Couldn't find word:%s \n", cli_word->actual_word);
+                free(cli_word);
                 continue;
             }
             printf("%d %s %d\n", cli_post_node->line_id, cli_word->actual_word, cli_post_node->freq);

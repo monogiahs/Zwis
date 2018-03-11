@@ -20,21 +20,21 @@ struct trie_node
         struct post_list_node *post_list_head;
         int end;
         int printed;
-        int text_length;
-        char text[0];
 };
 
-struct trie_node *new_trie_node(char character, int word_length);
+struct trie_node *new_trie_node(char character);
 
 void clean_trie(void);
 
 void free_trie(struct trie_node *root);
 
+void reinit_df (struct trie_node *root);
+
 void df_print_retrie(void);
 
 void print_retrie(struct trie_node *root);
 
-struct trie_node *insert_char_to_trie(struct trie_node *root, char character, int i, int word_length);
+struct trie_node *insert_char_to_trie(struct trie_node *root, char character, int i);
 
 struct trie_node *search_word_to_trie(struct word *current_word);
 
