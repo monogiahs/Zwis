@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+
 #include "string.h"
 #include "retrie.h"
 #include "posting_list.h"
@@ -8,9 +10,9 @@
 struct trie_node *trie_node_head = NULL;
 
 //make a new trie node and zero initialize them
-struct trie_node *new_trie_node(char character, int word_length)
+struct trie_node *new_trie_node(char character)
 {
-        struct trie_node *trie_node_current = (struct trie_node *) malloc(sizeof(struct trie_node) + (word_length * sizeof(char)));
+        struct trie_node *trie_node_current = (struct trie_node *) malloc(sizeof(struct trie_node));
         trie_node_current->key = character;
         trie_node_current->last_text_id = 0;
         trie_node_current->line_id_counter = 0;
@@ -39,14 +41,37 @@ void free_trie(struct trie_node *root)
         }
         if (root->post_list_head != NULL)
         {
-                //free_post_list(root->post_list_head);
+                free_post_list(root->post_list_head);
         }
         free(root);
+}
+
+void reinit_df (struct trie_node *root)
+{
+    if(root == NULL)
+    {
+            return;
+    }
+    if(root->right_node != NULL)
+    {
+            reinit_df(root->right_node);
+    }
+    if(root->down_node != NULL)
+    {
+            reinit_df(root->down_node);
+    }
+    if(root->end == YES)
+    {
+            root->printed = YES;
+
+    }
 }
 
 void df_print_retrie(void)
 {
         print_retrie(trie_node_head);
+        reinit_df (trie_node_head);
+
 }
 
 void print_retrie(struct trie_node *root)
@@ -57,25 +82,25 @@ void print_retrie(struct trie_node *root)
         }
         if(root->right_node != NULL)
         {
-                if(root->right_node->printed == YES)
-                {
-                        printf("%s  %d\n",root->right_node->text, root->right_node->line_id_counter);
-                        root->right_node->printed = NO;
-                }
+//                if(root->right_node->printed == YES)
+//                {
+//                        printf("%s  %d\n",root->right_node->post_list_head->actual_word, root->right_node->line_id_counter);
+//                        root->right_node->printed = NO;
+//                }
                 print_retrie(root->right_node);
         }
         if(root->down_node != NULL)
         {
-                if(root->down_node->printed == YES)
-                {
-                        printf("%s  %d\n",root->down_node->text, root->down_node->line_id_counter);
-                        root->down_node->printed = NO;
-                }
+//                if(root->down_node->printed == YES)
+//                {
+//                        printf("%s  %d\n",root->down_node->post_list_head->actual_word, root->down_node->line_id_counter);
+//                        root->down_node->printed = NO;
+//                }
                 print_retrie(root->down_node);
         }
         if(root->printed == YES)
         {
-                printf("%s  %d\n",root->text, root->line_id_counter);
+                printf("%s  %d\n",root->post_list_head->actual_word, root->line_id_counter);
                 root->printed = NO;
 
         }
@@ -207,14 +232,14 @@ struct trie_node *search_word_to_trie(struct word *current_word)
 }
 
 
-struct trie_node * insert_char_to_trie(struct trie_node *root, char character, int i, int word_length)
+struct trie_node * insert_char_to_trie(struct trie_node *root, char character, int i)
 {
 //
        static int previous = NOT_FOUND;
 
        if (root == NULL)
        {
-               trie_node_head = new_trie_node(character, word_length);
+               trie_node_head = new_trie_node(character);
                return (trie_node_head);
        }
 
@@ -237,7 +262,7 @@ struct trie_node * insert_char_to_trie(struct trie_node *root, char character, i
                        //character isn't here but and I don't have more right nodes (create one and initialize them)
                        else
                        {
-                               root->right_node = new_trie_node(character, word_length);
+                               root->right_node = new_trie_node(character);
                                return root->right_node;
                        }
                }
@@ -266,7 +291,7 @@ struct trie_node * insert_char_to_trie(struct trie_node *root, char character, i
                                                }
                                                else
                                                {
-                                                       root->down_node->right_node = new_trie_node(character, word_length);
+                                                       root->down_node->right_node = new_trie_node(character);
                                                        previous = FOUND;
                                                        return root->down_node->right_node;
                                                }
@@ -274,7 +299,7 @@ struct trie_node * insert_char_to_trie(struct trie_node *root, char character, i
                                }
                                else
                                {
-                                       root->down_node = new_trie_node(character, word_length);
+                                       root->down_node = new_trie_node(character);
                                        previous = FOUND;
                                        return root->down_node;
                                }
@@ -295,7 +320,7 @@ struct trie_node * insert_char_to_trie(struct trie_node *root, char character, i
                                        }
                                        else
                                        {
-                                               root->right_node = new_trie_node(character, word_length);
+                                               root->right_node = new_trie_node(character);
                                                previous = FOUND;
                                                return root->right_node;
                                        }
@@ -315,22 +340,12 @@ int insert_word_to_trie(struct word *current_word)
 
         for (int i=0; i < current_word->word_length; i++)
         {
-                if(current_word->actual_word[i] != '\0')
+                if(current_word->actual_word[i] != '\0' /*&& current_word->actual_word[i] != ' ' && current_word->actual_word[i] != '\t'*/)
                 {
-                        if (i < current_word->word_length -2)
-                        {
-                                trie_node_current = insert_char_to_trie(trie_node_current, current_word->actual_word[i], i, 0);
-                        }
-                        else
-                        {
-                                trie_node_current = insert_char_to_trie(trie_node_current, current_word->actual_word[i], i, current_word->word_length-1);
-                        }
+                    trie_node_current = insert_char_to_trie(trie_node_current, current_word->actual_word[i], i);
                 }
 
         }
-
-        trie_node_current->text_length = current_word->word_length;
-        strcpy(trie_node_current->text, current_word->actual_word);
 
         if (trie_node_current->last_text_id == 0 && current_word->number_of_line == 0 && trie_node_current->line_id_counter == 0)
         {
@@ -341,9 +356,9 @@ int insert_word_to_trie(struct word *current_word)
                 trie_node_current->line_id_counter++;
                 trie_node_current->last_text_id = current_word->number_of_line;
         }
+        //in terminating nodes flags "end" and "printed" are YES
         trie_node_current->end = trie_node_current->printed = YES;
         trie_node_current->post_list_head = update_post_list(trie_node_current->post_list_head,current_word);
-        //update_fast_df();
         return dummy;
 }
 

@@ -29,9 +29,7 @@ int main(int argc, char **argv)
 
 
         load_map_list(argv[get_arg_doc()]);
-        print_map_list();
+        //print_map_list();
         load_retrie();
         command_line_user();
-
-
 }
