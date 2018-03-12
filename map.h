@@ -6,6 +6,8 @@ struct map_node
     struct map_node* next;
     int id;
     int text_length;
+    int number_of_words;
+    double score;
     char text[0];
 };
 
@@ -29,5 +31,7 @@ struct map_node *load_map_list(char *docfile);
 struct word *get_word(void);
 
 void set_word(void);
+
+int get_words_per_line(struct map_node *map_node_next);
 
 #endif /* _MAP_H_ */
