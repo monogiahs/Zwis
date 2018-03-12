@@ -66,6 +66,10 @@ void command_line_user(void)
             df_print_retrie();
             CLIcount++;
         }
+//        else if (strcmp(tokenSpace1, "/df") == 0)
+//        {
+
+//        }
         //First argument is /tf
         else if(strcmp(tokenSpace1, "/tf") == 0)
         {

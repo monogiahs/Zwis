@@ -9,7 +9,8 @@ SOURCES += \
     command_line_utils.c \
     doc_utils.c \
     posting_list.c \
-    retrie.c
+    retrie.c \
+    cli.c
 
 DISTFILES += \
     docfile \
@@ -21,5 +22,6 @@ HEADERS += \
     doc_utils.h \
     map.h \
     posting_list.h \
-    retrie.h
+    retrie.h \
+    cli.h
 
