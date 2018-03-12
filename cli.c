@@ -66,10 +66,38 @@ void command_line_user(void)
             df_print_retrie();
             CLIcount++;
         }
-//        else if (strcmp(tokenSpace1, "/df") == 0)
-//        {
+        else if (strcmp(tokenSpace1, "/df") == 0)
+        {
+            if((word = strtok_r(tokenSpace2, "\n", &args)) == NULL)
+            {
+                printf("Wrong Arguments\n");
+                CLIcount++;
+                continue;
+            }
+            cli_word_length = strlen(word) + 1;
 
-//        }
+            //Memory allocated is sizeof(struct) + sizeof(word from cli) + sizeof("\0")
+            cli_word = (struct word*) malloc(sizeof(struct word) + cli_word_length*sizeof(char) + 1*sizeof(char));
+            memset(cli_word, 0, (sizeof(struct word) + cli_word_length*sizeof(char) + 1*sizeof(char)));
+            if(cli_word == NULL)
+            {
+                printf("Not enough memory in heap\n");
+                exit(EXIT_FAILURE);
+            }
+            //fill word struct
+            strcpy(cli_word->actual_word, word);
+            strcat(cli_word->actual_word, "\0");
+            cli_word->word_length = cli_word_length;
+            if((cli_trie_node = search_word_to_trie(cli_word)) == NULL)
+            {
+                printf("Couldn't find word:%s \n", cli_word->actual_word);
+                free(cli_word);
+                continue;
+            }
+            printf("%s %d\n", cli_trie_node->post_list_head->actual_word, cli_trie_node->line_id_counter);
+            free(cli_word);
+            CLIcount++;
+        }
         //First argument is /tf
         else if(strcmp(tokenSpace1, "/tf") == 0)
         {

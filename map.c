@@ -113,7 +113,7 @@ int add_map_node_to_list(int number_of_character_line,int number_of_line, FILE* 
         //printf("%.*s>>>\n", number_of_character_line + 1, map_node_head->text);
 
 
-        //printf("%d\n", map_node_next->number_of_words = get_words_per_line(map_node_next));
+        map_node_next->number_of_words = get_words_per_line(map_node_next);
 
 
         return 0;
@@ -272,11 +272,11 @@ int get_words_per_line(struct map_node *map_node_next)
 
     while(map_node_next->text[i] != '\0')
     {
-        if(map_node_next->text[i] != ' ' && map_node_next->text[i] != '\t' && map_node_next->text[i] != '\n')
+        if(map_node_next->text[i] != ' ' && map_node_next->text[i] != '\t' /*&& map_node_next->text[i] != '\n'*/)
         {
             wchars++;
         }
-        else if((map_node_next->text[i] == ' ' || map_node_next->text[i] == '\t' || map_node_next->text[i] == '\n') && wchars != 0)
+        else if((map_node_next->text[i] == ' ' || map_node_next->text[i] == '\t' /*|| map_node_next->text[i] == '\n'*/) && wchars != 0)
         {
             words++;
             wchars = 0;
