@@ -10,6 +10,8 @@
 #define FOUND 1
 #define NOT_FOUND 0
 
+extern int total_word_counter;
+
 struct trie_node
 {
         int last_text_id;
@@ -38,9 +40,10 @@ struct trie_node *insert_char_to_trie(struct trie_node *root, char character, in
 
 struct trie_node *search_word_to_trie(struct word *current_word);
 
+int get_line_id_counter(struct word *current_word);
+
 int insert_word_to_trie(struct word *current_word);
 
 struct trie_node *load_retrie(void);
 
 #endif /* _RETRIE_H_ */
-
