@@ -6,6 +6,8 @@
 #include "retrie.h"
 #include "posting_list.h"
 
+int total_word_counter = 0;
+
 //head node for map list
 struct trie_node *trie_node_head = NULL;
 
@@ -231,6 +233,10 @@ struct trie_node *search_word_to_trie(struct word *current_word)
         }
 }
 
+int get_line_id_counter(struct word *current_word)
+{
+        return (search_word_to_trie(current_word)->line_id_counter);
+}
 
 struct trie_node * insert_char_to_trie(struct trie_node *root, char character, int i)
 {
@@ -373,9 +379,9 @@ struct trie_node *load_retrie(void)
                 {
                         break;
                 }
+                total_word_counter++;
                 insert_word_to_trie(current_word);
                 free(current_word);
         }
         return trie_node_head;
 }
-

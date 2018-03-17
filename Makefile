@@ -53,13 +53,17 @@ SOURCES       = main.c \
 		command_line_utils.c \
 		doc_utils.c \
 		posting_list.c \
-		retrie.c 
+		retrie.c \
+		cli.c \
+		score_calculator.c 
 OBJECTS       = main.o \
 		map.o \
 		command_line_utils.o \
 		doc_utils.o \
 		posting_list.o \
-		retrie.o
+		retrie.o \
+		cli.o \
+		score_calculator.o
 DIST          = docfile \
 		documents.txt \
 		docfile1.txt \
@@ -118,12 +122,16 @@ DIST          = docfile \
 		doc_utils.h \
 		map.h \
 		posting_list.h \
-		retrie.h main.c \
+		retrie.h \
+		cli.h \
+		score_calculator.h main.c \
 		map.c \
 		command_line_utils.c \
 		doc_utils.c \
 		posting_list.c \
-		retrie.c
+		retrie.c \
+		cli.c \
+		score_calculator.c
 QMAKE_TARGET  = Zwis
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = Zwis
@@ -303,11 +311,14 @@ main.o: main.c command_line_utils.h \
 		doc_utils.h \
 		map.h \
 		retrie.h \
-		posting_list.h
+		posting_list.h \
+		cli.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o main.o main.c
 
 map.o: map.c map.h \
-		doc_utils.h
+		doc_utils.h \
+		command_line_utils.h \
+		cli.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o map.o map.c
 
 command_line_utils.o: command_line_utils.c command_line_utils.h
@@ -316,13 +327,30 @@ command_line_utils.o: command_line_utils.c command_line_utils.h
 doc_utils.o: doc_utils.c doc_utils.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o doc_utils.o doc_utils.c
 
-posting_list.o: posting_list.c posting_list.h
+posting_list.o: posting_list.c posting_list.h \
+		map.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o posting_list.o posting_list.c
 
 retrie.o: retrie.c retrie.h \
 		posting_list.h \
 		map.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o retrie.o retrie.c
+
+cli.o: cli.c command_line_utils.h \
+		cli.h \
+		map.h \
+		posting_list.h \
+		retrie.h \
+		doc_utils.h \
+		score_calculator.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o cli.o cli.c
+
+score_calculator.o: score_calculator.c score_calculator.h \
+		map.h \
+		doc_utils.h \
+		retrie.h \
+		posting_list.h
+	$(CC) -c $(CFLAGS) $(INCPATH) -o score_calculator.o score_calculator.c
 
 ####### Install
 

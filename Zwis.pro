@@ -10,7 +10,8 @@ SOURCES += \
     doc_utils.c \
     posting_list.c \
     retrie.c \
-    cli.c
+    cli.c \
+    score_calculator.c
 
 DISTFILES += \
     docfile \
@@ -23,5 +24,6 @@ HEADERS += \
     map.h \
     posting_list.h \
     retrie.h \
-    cli.h
+    cli.h \
+    score_calculator.h
 
