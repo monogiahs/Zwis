@@ -16,7 +16,8 @@ SOURCES += \
 DISTFILES += \
     docfile \
     documents.txt \
-    docfile1.txt
+    docfile1.txt \
+    docfile1
 
 HEADERS += \
     command_line_utils.h \

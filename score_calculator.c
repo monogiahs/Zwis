@@ -91,9 +91,14 @@ void call_calculations(struct word* current_word)
     create_replicate_map_list();
     //print_map_short_list();
     sort_replicate_map_list();
+<<<<<<< HEAD
     //print_map_short_list();
     get_top_k(top_k);
     printer(top_k);
+=======
+    print_map_short_list();
+    get_top_k(top_k);
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
     free_replica();
 }
 

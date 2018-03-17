@@ -67,6 +67,7 @@ OBJECTS       = main.o \
 DIST          = docfile \
 		documents.txt \
 		docfile1.txt \
+		docfile1 \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -317,8 +318,12 @@ main.o: main.c command_line_utils.h \
 
 map.o: map.c map.h \
 		doc_utils.h \
+<<<<<<< HEAD
 		command_line_utils.h \
 		cli.h
+=======
+		command_line_utils.h
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
 	$(CC) -c $(CFLAGS) $(INCPATH) -o map.o map.c
 
 command_line_utils.o: command_line_utils.c command_line_utils.h

@@ -15,11 +15,14 @@
 //node for the head of search_words list
 struct word *search_words_head = NULL;
 
+<<<<<<< HEAD
 struct word *get_word_list()
 {
     return search_words_head;
 }
 
+=======
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
 struct word *new_word(int cli_word_length)
 {
     //Memory allocated is sizeof(struct) + sizeof(word from cli) + sizeof("\0")
@@ -68,6 +71,7 @@ void command_line_user(void)
         //First argument is /search
         if(strcmp(str, "\n") == 0)
         {
+<<<<<<< HEAD
             CLIcount++;
             continue;
         }
@@ -132,6 +136,67 @@ void command_line_user(void)
             if(search_words_head != NULL)
               free_word_list();
         }
+=======
+            word = strtok (str," \t");
+            while (word != NULL && k <= get_arg_k_val())
+              {
+                word = strtok (NULL, " \t\n");
+                if(word == NULL && k == 1)
+                {
+                    printf("Wrong Arguments\n");
+                    CLIcount++;
+                    break;
+                }
+                else if(word == NULL && k <= get_arg_k_val())
+                {
+                    CLIcount++;
+                    break;
+                }
+                cli_word_length = strlen(word) + 1;
+                cli_word = new_word(cli_word_length);
+                if(cli_word == NULL)
+                {
+                    printf("Not enough memory in heap\n");
+                    exit(EXIT_FAILURE);
+                }
+                //fill word struct
+                strcpy(cli_word->actual_word, word);
+                strcat(cli_word->actual_word, "\0");
+                cli_trie_node = search_word_to_trie(cli_word);
+                if(cli_trie_node == NULL)
+                {
+                    printf("Couldn't find word:%s\n\n", cli_word->actual_word);
+                    k++;
+                    free(cli_word);
+                    continue;
+                }
+                cli_post_node = cli_trie_node->post_list_head;
+//                while(1)
+//                {
+//                    if(cli_post_node->post_next != NULL)
+//                    {
+//                        printf("%s\n", (search_map_node_to_list_with_id(cli_post_node->line_id)->text));
+//                        //search_word_to_map_node(cli_post_node, cli_word);
+//                        cli_post_node = cli_post_node->post_next;
+//                    }
+//                    else
+//                    {
+//                        printf("%s\n\n", (search_map_node_to_list_with_id(cli_post_node->line_id)->text));
+//                        break;
+//                    }
+
+//                }
+                //score_calculator(cli_word);
+                add_word_to_list(cli_word);
+                k++;
+              }
+
+            call_calculations(search_words_head);
+
+            if(search_words_head != NULL)
+              free_word_list();
+        }
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
         //First argument is /df
         else if(strcmp(tokenSpace1, "/df") == 0)
         {

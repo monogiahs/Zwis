@@ -7,7 +7,10 @@
 #include "map.h"
 #include "doc_utils.h"
 #include "command_line_utils.h"
+<<<<<<< HEAD
 #include "cli.h"
+=======
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
 
 //node for the head of map list
 struct map_node *map_node_head = NULL;
@@ -207,7 +210,11 @@ void get_top_k(struct map_short_node *tmp)
         tmp[i].score = map_current->score;
         tmp[i].next = NULL;
         map_current = map_current->next;
+<<<<<<< HEAD
         //printf("score (%f) with id %d\n", tmp[i].score, tmp[i].id);
+=======
+        printf("score (%f) with id %d\n", tmp[i].score, tmp[i].id);
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
     }
 }
 
@@ -514,6 +521,7 @@ int get_words_per_line(struct map_node *map_node_next)
     return words + 1;
 }
 
+<<<<<<< HEAD
 
 void printer(struct map_short_node *tmp)
 {
@@ -710,3 +718,5 @@ struct map_node *remove_tabs(struct map_node *map_node_current)
 
 
 
+=======
+>>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
