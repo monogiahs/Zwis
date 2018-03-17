@@ -3,11 +3,8 @@
 
 #include "map.h"
 
-<<<<<<< HEAD
 struct word *get_word_list();
 
-=======
->>>>>>> eb2886be7fb1a7b4d23652af65d9ea0c98392f63
 void command_line_user(void);
 
 void free_all(void);
